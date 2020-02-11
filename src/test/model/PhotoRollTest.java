@@ -48,7 +48,7 @@ public class PhotoRollTest {
         pr.addPhotoEntry(p1);
 
         assertFalse(pr.removePhotoEntry(p2));
-        assertTrue(pr.getTags().contains(p1));
+        assertTrue(pr.getPhotoEntries().contains(p1));
 
         assertTrue(pr.removePhotoEntry(p1));
         assertEquals(0, pr.getPhotoEntries().size());
@@ -58,19 +58,21 @@ public class PhotoRollTest {
     void testAddTag() {
         pr.addPhotoEntry(p1);
 
-        pr.addTag(t1);
+        assertTrue(pr.addTag(t1));
         assertEquals(1, pr.getTags().size());
         assertTrue(pr.getTags().contains(t1));
         assertTrue(p1.hasTag(t1));
 
         pr.addPhotoEntry(p2);
-        assertTrue(p2.hasTag(t2));
+        assertTrue(p2.hasTag(t1));
 
-        pr.addTag(t1);
-        pr.addTag(t2);
+        assertFalse(pr.addTag(t1));
+        assertTrue(pr.addTag(t2));
         assertEquals(2, pr.getTags().size());
         assertTrue(p1.hasTag(t2));
         assertTrue(p2.hasTag(t2));
+
+        assertTrue(pr.getTags().contains(t1));
         assertTrue(pr.getTags().contains(t2));
     }
 

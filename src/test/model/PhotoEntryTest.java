@@ -28,6 +28,7 @@ public class PhotoEntryTest {
     void testConstructor() {
         assertEquals(PhotoEntry.DEFAULT_DESC, pe.getDescription());
         assertEquals(0, pe.getTags().size());
+        assertEquals("tobs.jpg", pe.getFilename());
 
         // overloaded constructor
         PhotoEntry po = new PhotoEntry(new File("data/tobs.jpg"), d1);
@@ -76,6 +77,5 @@ public class PhotoEntryTest {
         pe.setDescription(desc1);
         assertEquals(desc1, pe.getDescription());
     }
-
 
 }

@@ -9,8 +9,9 @@ public class Tag {
         this.tag = tag;
     }
 
+    // EFFECTS: returns the tag string for this tag
     public String getTag() {
-        return ""; // stub
+        return tag;
     }
 
 }

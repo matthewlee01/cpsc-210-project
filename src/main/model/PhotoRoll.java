@@ -13,48 +13,64 @@ public class PhotoRoll {
 
     // EFFECTS: creates a new photo roll
     public PhotoRoll(String name) {
-        // stub
+        this.name = name;
+        photoEntries = new ArrayList<>();
+        tags = new ArrayList<>();
     }
 
     // MODIFIES: this
-    // EFFECTS: adds photo entry p to this photo roll
-    public void addPhotoEntry(PhotoEntry p) {
-        // stub
+    // EFFECTS: adds photo entry p to this photo roll and applies all tags to it
+    public void addPhotoEntry(PhotoEntry photo) {
+        photoEntries.add(photo);
+        for (Tag t : tags) {
+            photo.addTag(t);
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: if p is found, removes it and returns true,
     //          otherwise returns false
-    public boolean removePhotoEntry(PhotoEntry p) {
-        return true; // stub
+    public boolean removePhotoEntry(PhotoEntry photo) {
+        return photoEntries.remove(photo);
     }
 
     // EFFECTS: returns all photo entries
     public ArrayList<PhotoEntry> getPhotoEntries() {
-        return new ArrayList<>(); // stub
+        return photoEntries;
     }
 
     // MODIFIES: this
     // EFFECTS: if t is already in tags, does nothing and returns false
     //          otherwise adds t to tags, applies it to all photos, and returns true
-    public void addTag(Tag t) {
-        // stub
+    public boolean addTag(Tag tag) {
+        if (tags.contains(tag)) {
+            return false;
+        } else {
+            tags.add(tag);
+            for (PhotoEntry p : photoEntries) {
+                p.addTag(tag);
+            }
+            return true;
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: if t is found, removes it and returns true,
     //          otherwise returns false
-    public boolean removeTag(Tag t) {
-        return true; // stub
+    public boolean removeTag(Tag tag) {
+        for (PhotoEntry p : photoEntries) {
+            p.removeTag(tag);
+        }
+        return tags.remove(tag);
     }
 
     // EFFECTS: returns all tags
     public ArrayList<Tag> getTags() {
-        return new ArrayList<>(); // stub
+        return tags;
     }
 
     // EFFECTS: returns name
     public String getName() {
-        return ""; // stub
+        return name;
     }
 }

@@ -16,6 +16,6 @@ public class TagTest {
 
     @Test
     void testGetTag() {
-        assertEquals("#seflie", t.getTag());
+        assertEquals("#selfie", t.getTag());
     }
 }

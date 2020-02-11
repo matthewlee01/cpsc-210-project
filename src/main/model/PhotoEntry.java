@@ -17,58 +17,75 @@ public class PhotoEntry {
     // REQUIRES: photoFile is a valid photo file
     // EFFECTS: creates a new photofile, with date defaulted to right now
     public PhotoEntry(File photoFile) {
-        // stub
+        this.photoFile = photoFile;
+        date = new Date();
+        description = DEFAULT_DESC;
+        tags = new ArrayList<>();
     }
 
     // REQUIRES: photoFile is a valid photo file
     // EFFECTS: creates a new photofile, with date specified
     public PhotoEntry(File photoFile, Date date) {
-        // stub
+        this.photoFile = photoFile;
+        this.date = date;
+        description = DEFAULT_DESC;
+        tags = new ArrayList<>();
     }
 
     // REQUIRES: date is in the past
     // MODIFIES: this
     // EFFECTS: sets date
     public void setDate(Date date) {
-        // stub
+        this.date = date;
     }
 
     // EFFECTS: returns date
     public Date getDate() {
-        return new Date(); // stub
+        return date;
     }
 
     // MODIFIES: this
     // EFFECTS: if t is already in tags, does nothing and returns false
     //          otherwise adds t to tags and returns true
-    public boolean addTag(Tag t) {
-        return true; // stub
+    public boolean addTag(Tag tag) {
+        if (hasTag(tag)) {
+            return false;
+        } else {
+            tags.add(tag);
+            return true;
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: if t is in tags, removes it and returns true
     //          otherwise returns false
-    public boolean removeTag(Tag t) {
-        return true; // stub
+    public boolean removeTag(Tag tag) {
+        return tags.remove(tag);
     }
 
     // EFFECTS: returns all tags
     public ArrayList<Tag> getTags() {
-        return new ArrayList<>(); // stub
+        return tags;
     }
 
     // EFFECTS: returns true if photo has tag t
-    public boolean hasTag(Tag t) {
-        return true; // stub
+    public boolean hasTag(Tag tag) {
+        return tags.contains(tag);
     }
 
     // MODIFIES: this
     // EFFECTS: sets the description
-    public void setDescription(String s) {
-        // stub
+    public void setDescription(String description) {
+        this.description = description;
     }
 
+    // EFFECTS: returns the description
     public String getDescription() {
-        return ""; // stub
+        return description;
+    }
+
+    // EFFECTS: returns the filename of the photo file
+    public String getFilename() {
+        return photoFile.getName();
     }
 }
