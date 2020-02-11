@@ -7,8 +7,11 @@ import java.util.ArrayList;
 // a photo with its associated data and tags
 public class PhotoEntry {
 
+    public static final String DEFAULT_DESC = "No description added yet.";
+
     private File photoFile;
     private Date date;
+    private String description;
     private ArrayList<Tag> tags;
 
     // REQUIRES: photoFile is a valid photo file
@@ -59,4 +62,13 @@ public class PhotoEntry {
         return true; // stub
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the description
+    public void setDescription(String s) {
+        // stub
+    }
+
+    public String getDescription() {
+        return ""; // stub
+    }
 }

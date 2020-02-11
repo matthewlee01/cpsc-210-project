@@ -12,6 +12,6 @@ Additionally, this app aims to provide film-specific tools to help streamline th
 ### User Stories
 
  - As a user, I want to be able to add a photo to my archive.
- - As a user, I want to be able to sort and filter my photos when I access them.
+ - As a user, I want to be able to filter my photos when I access them.
  - As a user, I want to be able to add custom tags and descriptions to my photo entries.
  - As a user, I want to be able to organize my photo entries into "rolls" to represent the physical film rolls they were taken from.

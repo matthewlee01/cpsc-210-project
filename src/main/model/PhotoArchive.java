@@ -34,4 +34,12 @@ public class PhotoArchive {
     public ArrayList<PhotoEntry> getAllPhotoEntries() {
         return new ArrayList<>(); //stub
     }
+
+    // EFFECTS: returns all photo entries in pl that have tag t
+    public static ArrayList<PhotoEntry> filterPhotosByTag(ArrayList<PhotoEntry> pl,
+                                                          Tag t) {
+        return new ArrayList<>(); // stub
+    }
 }
+
+
