@@ -90,4 +90,9 @@ public class PhotoRollTest {
         assertFalse(pr.getTags().contains(t1));
 
     }
+
+    @Test
+    void testToString() {
+        assertEquals(pr.getName(), pr.toString());
+    }
 }

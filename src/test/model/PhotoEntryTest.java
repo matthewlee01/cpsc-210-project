@@ -82,4 +82,8 @@ public class PhotoEntryTest {
         assertEquals(desc1, pe.getDescription());
     }
 
+    @Test
+    void testToString() {
+        assertEquals(pe.getFilename(), pe.toString());
+    }
 }
