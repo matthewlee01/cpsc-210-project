@@ -87,12 +87,12 @@ class PhotoArchiveTest {
         pl.add(p2);
         pl.add(p3);
 
-        ArrayList<PhotoEntry> plt1 = PhotoArchive.filterPhotosByTag(pl, t1);
+        ArrayList<PhotoEntry> plt1 = PhotoArchive.filterPhotosByTag(pl, t1.getTag());
         assertTrue(plt1.contains(p1));
         assertFalse(plt1.contains(p2));
         assertTrue(plt1.contains(p3));
 
-        ArrayList<PhotoEntry> plt2 = PhotoArchive.filterPhotosByTag(pl, t2);
+        ArrayList<PhotoEntry> plt2 = PhotoArchive.filterPhotosByTag(pl, t2.getTag());
         assertFalse(plt2.contains(p1));
         assertTrue(plt2.contains(p2));
         assertFalse(plt2.contains(p3));

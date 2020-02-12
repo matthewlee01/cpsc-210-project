@@ -55,8 +55,12 @@ public class PhotoEntryTest {
 
         assertTrue(pe.addTag(t2));
         assertEquals(2, pe.getTags().size());
+
         assertTrue(pe.hasTag(t1));
         assertTrue(pe.hasTag(t2));
+
+        assertTrue(pe.hasTag(t1.getTag()));
+        assertTrue(pe.hasTag(t2.getTag()));
 
     }
 

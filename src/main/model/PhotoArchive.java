@@ -42,10 +42,10 @@ public class PhotoArchive {
 
     // EFFECTS: returns all photo entries that have the given tag
     public static ArrayList<PhotoEntry> filterPhotosByTag(ArrayList<PhotoEntry> photoList,
-                                                          Tag tag) {
+                                                          String tagString) {
         ArrayList<PhotoEntry> filteredList = new ArrayList<>();
         for (PhotoEntry p : photoList) {
-            if (p.hasTag(tag)) {
+            if (p.hasTag(tagString)) {
                 filteredList.add(p);
             }
         }

@@ -14,4 +14,9 @@ public class Tag {
         return tag;
     }
 
+    @Override
+    public String toString() {
+        return tag;
+    }
+
 }

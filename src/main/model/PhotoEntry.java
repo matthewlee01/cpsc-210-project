@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.ArrayList;
 
 // a photo with its associated data and tags
-public class PhotoEntry {
+public class PhotoEntry implements Taggable {
 
     public static final String DEFAULT_DESC = "No description added yet.";
 
@@ -48,7 +48,7 @@ public class PhotoEntry {
     // EFFECTS: if t is already in tags, does nothing and returns false
     //          otherwise adds t to tags and returns true
     public boolean addTag(Tag tag) {
-        if (hasTag(tag)) {
+        if (tags.contains(tag)) {
             return false;
         } else {
             tags.add(tag);
@@ -69,6 +69,15 @@ public class PhotoEntry {
     }
 
     // EFFECTS: returns true if photo has tag t
+    public boolean hasTag(String tag) {
+        for (Tag t : tags) {
+            if (t.getTag().equals(tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean hasTag(Tag tag) {
         return tags.contains(tag);
     }
@@ -87,5 +96,10 @@ public class PhotoEntry {
     // EFFECTS: returns the filename of the photo file
     public String getFilename() {
         return photoFile.getName();
+    }
+
+    @Override
+    public String toString() {
+        return getFilename();
     }
 }
