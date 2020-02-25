@@ -15,3 +15,6 @@ Additionally, this app aims to provide film-specific tools to help streamline th
  - As a user, I want to be able to filter my photos when I access them.
  - As a user, I want to be able to add custom tags and descriptions to my photo entries.
  - As a user, I want to be able to organize my photo entries into "rolls" to represent the physical film rolls they were taken from.
+ - As a user, I want to be able to have the option to save any changes to my photo archive before I exit the application.
+ - As a user, I want to be able to automatically load my saved photo archive when I open the application.
+ 
