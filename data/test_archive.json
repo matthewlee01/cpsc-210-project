@@ -1,0 +1,37 @@
+[
+  {
+    "name": "roll1",
+    "photo_entries": [
+      {
+        "file": "data/tobs.jpg",
+        "date_long": 1500000000000,
+        "description": "the tobdog",
+        "tags": ["#dog", "#cute"]
+      },
+      {
+        "file": "data/tobs.jpg",
+        "date_long": 1000000000000,
+        "description": "puppy photo of tobs",
+        "tags": ["#puppy", "#cute"]
+      }
+    ],
+    "tags": ["#cute"]
+  },
+  {
+    "name": "roll2",
+    "photo_entries": [],
+    "tags": []
+  },
+  {
+    "name": "roll3",
+    "photo_entries": [
+      {
+        "file": "data/charlie.jpg",
+        "date_long": 1580000000000,
+        "description": "my dog charlie",
+        "tags": ["#dog"]
+      }
+    ],
+    "tags": []
+  }
+]
