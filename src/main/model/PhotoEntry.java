@@ -68,7 +68,7 @@ public class PhotoEntry implements Taggable {
         return tags;
     }
 
-    // EFFECTS: returns true if photo has tag t
+    // EFFECTS: returns true if photo has a tag matching the given string
     public boolean hasTag(String tag) {
         for (Tag t : tags) {
             if (t.getTag().equals(tag)) {
@@ -78,6 +78,7 @@ public class PhotoEntry implements Taggable {
         return false;
     }
 
+    // EFFECTS: returns true if photo has tag t
     public boolean hasTag(Tag tag) {
         return tags.contains(tag);
     }
