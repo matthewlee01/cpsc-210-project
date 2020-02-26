@@ -4,7 +4,6 @@ import model.PhotoArchive;
 import model.PhotoEntry;
 import model.PhotoRoll;
 import org.junit.jupiter.api.Test;
-import persistence.Reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class ReaderTest {
             assertEquals("#cute", r1.getTags().get(0).getTag());
 
             PhotoEntry p1 = r1.getPhotoEntries().get(0);
-            assertEquals("data/tobs.jpg", p1.getFilename());
+            assertEquals("tobs.jpg", p1.getFilename());
             assertEquals(1500000000000L, p1.getDate().getTime());
             assertEquals("the tobdog", p1.getDescription());
             assertEquals("#dog", p1.getTags().get(0).getTag());
