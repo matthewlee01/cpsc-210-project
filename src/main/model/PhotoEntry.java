@@ -99,6 +99,11 @@ public class PhotoEntry implements Taggable {
         return photoFile.getName();
     }
 
+    // EFFECTS: returns the photo file
+    public File getPhotoFile() {
+        return photoFile;
+    }
+
     @Override
     public String toString() {
         return getFilename();

@@ -10,16 +10,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PhotoEntryTest {
 
+    File testFile;
     PhotoEntry pe;
-    Tag t1, t2;
     Date d1;
+    Tag t1, t2;
 
     @BeforeEach
     void runBefore() {
+        testFile = new File("data/tobs.jpg");
+        pe = new PhotoEntry(testFile);
         d1 = new Date(1000);
-
-        pe = new PhotoEntry(new File("data/tobs.jpg"));
-
         t1 = new Tag("#iso400");
         t2 = new Tag("#kodakfilm");
     }
@@ -29,6 +29,7 @@ public class PhotoEntryTest {
         assertEquals(PhotoEntry.DEFAULT_DESC, pe.getDescription());
         assertEquals(0, pe.getTags().size());
         assertEquals("tobs.jpg", pe.getFilename());
+        assertEquals(testFile, pe.getPhotoFile());
 
         // overloaded constructor
         PhotoEntry po = new PhotoEntry(new File("data/tobs.jpg"), d1);

@@ -43,12 +43,14 @@ public class WriterTest {
 
         try {
             PhotoArchive readArchive = Reader.readArchive(new File(testFile));
-            PhotoRoll rr = readArchive.getPhotoRolls().get(0);
-            PhotoEntry rp1 = rr.getPhotoEntries().get(0);
-            PhotoEntry rp2 = rr.getPhotoEntries().get(1);
             assertEquals(1, readArchive.getPhotoRolls().size());
             assertEquals(2, readArchive.getAllPhotoEntries().size());
+
+            PhotoRoll rr = readArchive.getPhotoRolls().get(0);
             assertEquals("dog pictures", rr.getName());
+
+            PhotoEntry rp1 = rr.getPhotoEntries().get(0);
+            PhotoEntry rp2 = rr.getPhotoEntries().get(1);
             assertTrue(rp1.hasTag("#dog"));
             assertTrue(rp2.hasTag("#dog"));
             assertTrue(rp1.hasTag("#puppy"));
