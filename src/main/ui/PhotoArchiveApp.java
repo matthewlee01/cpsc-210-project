@@ -1,8 +1,11 @@
 package ui;
 
 import model.*;
+import persistence.Reader;
+import persistence.Writer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,13 +15,37 @@ public class PhotoArchiveApp {
     private PhotoArchive archive;
     private Scanner input;
     private static final String INVALID_INPUT_MSG = "Invalid input! Please enter a valid selection.";
+    private static final String DATA_FILE = "data/archive.json";
     private static final String BACK_CMD = "b";
     private static final String EXIT_CMD = "x";
     private static final String INT_REGEX = "\\d+";
 
     // EFFECTS: runs the photo archive application
     public PhotoArchiveApp() {
+        loadPhotoArchive();
         launchPhotoArchive();
+    }
+
+    // MODIFIES: archive
+    // EFFECTS: attempts to load a the prexisting archive from file
+    public void loadPhotoArchive() {
+        try {
+            archive = Reader.readArchive(new File(DATA_FILE));
+        } catch (IOException e) {
+            System.out.println("Could not load archive from saved data - creating new archive.");
+            archive = new PhotoArchive();
+        }
+    }
+
+    // MODIFIES: DATA_FILE
+    // EFFECTS: saves the current photo archive to the JSON file
+    public void savePhotoArchive() {
+        try {
+            Writer.writeArchive(archive, new File(DATA_FILE));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     // EFFECTS: initiates the main archive menu
@@ -27,7 +54,6 @@ public class PhotoArchiveApp {
         boolean continueRunning = true;
 
         input = new Scanner(System.in);
-        archive = new PhotoArchive();
 
         while (continueRunning) {
             displayArchiveMenu();
@@ -37,12 +63,41 @@ public class PhotoArchiveApp {
 
             if (command.equals(EXIT_CMD)) {
                 continueRunning = false;
+                launchSavePrompt();
             } else {
                 processArchiveCommand(command);
             }
 
         }
         System.out.println("Bye bye!");
+    }
+
+    // EFFECTS: asks the user whether or not they would like to save before exiting
+    public void launchSavePrompt() {
+        String command;
+        boolean continueRunning = true;
+
+        while (continueRunning) {
+            displaySavePrompt();
+            command = input.next();
+            command = command.toLowerCase();
+            input.nextLine();
+
+            if (command.equals("y")) {
+                continueRunning = false;
+                savePhotoArchive();
+            } else if (command.equals("n")) {
+                continueRunning = false;
+            } else {
+                System.out.println(INVALID_INPUT_MSG);
+            }
+        }
+    }
+
+    // EFFECTS: displays the save prompt
+    public void displaySavePrompt() {
+        System.out.println("Would you like to save any changes made to your archive?");
+        System.out.println("(y/n)");
     }
 
     // EFFECTS: displays the options for main archive menu

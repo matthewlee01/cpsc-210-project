@@ -39,9 +39,8 @@ public class WriterTest {
     @Test
     void testWriteArchive() {
 
-        Writer.writeArchive(pa, new File(testFile));
-
         try {
+            Writer.writeArchive(pa, new File(testFile));
             PhotoArchive readArchive = Reader.readArchive(new File(testFile));
             assertEquals(1, readArchive.getPhotoRolls().size());
             assertEquals(2, readArchive.getAllPhotoEntries().size());
@@ -57,11 +56,20 @@ public class WriterTest {
             assertFalse(rp2.hasTag("#puppy"));
             assertEquals(PhotoEntry.DEFAULT_DESC, rp1.getDescription());
             assertEquals(1000000000000L, rp2.getDate().getTime());
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             fail("file read should not fail here");
         }
 
+    }
+
+    @Test
+    void testFailWriteArchive() {
+        try {
+            Writer.writeArchive(pa, new File("data"));
+            fail();
+        } catch(IOException e) {
+            // expected
+        }
     }
 
 }

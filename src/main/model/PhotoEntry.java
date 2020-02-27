@@ -48,7 +48,7 @@ public class PhotoEntry implements Taggable {
     // EFFECTS: if t is already in tags, does nothing and returns false
     //          otherwise adds t to tags and returns true
     public boolean addTag(Tag tag) {
-        if (tags.contains(tag)) {
+        if (hasTag(tag.getTag())) {
             return false;
         } else {
             tags.add(tag);

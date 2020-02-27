@@ -13,18 +13,17 @@ import java.io.IOException;
 
 public class Writer {
 
-    public static void writeArchive(PhotoArchive photoArchive, File file) {
+    // MODIFIES: file
+    // EFFECTS: encodes the given archive into a JSON object and writes it to file
+    public static void writeArchive(PhotoArchive photoArchive, File file) throws IOException {
         FileWriter fw;
-        try {
-            fw = new FileWriter(file);
-            JSONArray ja = encodePhotoArchive(photoArchive);
-            fw.write(ja.toString());
-            fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fw = new FileWriter(file);
+        JSONArray ja = encodePhotoArchive(photoArchive);
+        fw.write(ja.toString());
+        fw.close();
     }
 
+    // EFFECTS: encodes a photo archive as a list of photo rolls
     private static JSONArray encodePhotoArchive(PhotoArchive pa) {
         JSONArray ja = new JSONArray();
         for (PhotoRoll pr : pa.getPhotoRolls()) {
@@ -33,6 +32,7 @@ public class Writer {
         return ja;
     }
 
+    // EFFECTS: encodes a photo roll as a JSON object
     private static JSONObject encodePhotoRoll(PhotoRoll pr) {
         JSONObject jpr = new JSONObject();
         jpr.put("name", pr.getName());
@@ -52,6 +52,7 @@ public class Writer {
         return jpr;
     }
 
+    // EFFECTS: encodes a photo entry as a JSON object
     private static JSONObject encodePhotoEntry(PhotoEntry pe) {
         JSONObject jpe = new JSONObject();
         jpe.put("file", pe.getPhotoFile().getPath());

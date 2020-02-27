@@ -35,8 +35,7 @@ public class ReaderTest {
             assertEquals(0, r2.getTags().size());
 
             assertEquals(3, pa.getAllPhotoEntries().size());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             fail("file read should not fail here");
         }
         // stub
@@ -48,8 +47,7 @@ public class ReaderTest {
         try {
             pa = Reader.readArchive(new File("nonexistent_file.json"));
             fail();
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             // expected
         }
     }
