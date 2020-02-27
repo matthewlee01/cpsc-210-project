@@ -17,7 +17,7 @@ public class PhotoEntryTest {
 
     @BeforeEach
     void runBefore() {
-        testFile = new File("data/tobs.jpg");
+        testFile = new File("data/testdata/tobs.jpg");
         pe = new PhotoEntry(testFile);
         d1 = new Date(1000);
         t1 = new Tag("#iso400");
@@ -32,7 +32,7 @@ public class PhotoEntryTest {
         assertEquals(testFile, pe.getPhotoFile());
 
         // overloaded constructor
-        PhotoEntry po = new PhotoEntry(new File("data/tobs.jpg"), d1);
+        PhotoEntry po = new PhotoEntry(new File("data/testdata/tobs.jpg"), d1);
         assertEquals(d1, po.getDate());
         assertEquals(PhotoEntry.DEFAULT_DESC, po.getDescription());
         assertEquals(0, po.getTags().size());

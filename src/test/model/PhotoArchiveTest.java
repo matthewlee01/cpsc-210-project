@@ -21,9 +21,9 @@ class PhotoArchiveTest {
         r1 = new PhotoRoll("roll1");
         r2 = new PhotoRoll("roll2");
 
-        p1 = new PhotoEntry(new File("data/tobs.jpg"));
-        p2 = new PhotoEntry(new File("data/tobs.jpg"));
-        p3 = new PhotoEntry(new File("data/tobs.jpg"));
+        p1 = new PhotoEntry(new File("data/testdata/tobs.jpg"));
+        p2 = new PhotoEntry(new File("data/testdata/tobs.jpg"));
+        p3 = new PhotoEntry(new File("data/testdata/tobs.jpg"));
     }
 
     @Test

@@ -17,7 +17,7 @@ public class ReaderTest {
     @Test
     void testReadArchive() {
         try {
-            pa = Reader.readArchive(new File("data/test_archive.json"));
+            pa = Reader.readArchive(new File("data/testdata/test_archive.json"));
             assertEquals(3, pa.getPhotoRolls().size());
 
             PhotoRoll r1 = pa.getPhotoRolls().get(0);

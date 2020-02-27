@@ -19,14 +19,14 @@ public class WriterTest {
     PhotoRoll pr;
     PhotoEntry p1, p2;
 
-    private final static String testFile = "data/archive_write_test.json";
+    private final static String testFile = "data/testdata/archive_write_test.json";
 
     @BeforeEach
     void runBefore() {
         pa = new PhotoArchive();
         pr = new PhotoRoll("dog pictures");
-        p1 = new PhotoEntry(new File("data/tobs.jpg"));
-        p2 = new PhotoEntry(new File("data/charlie.jpg"));
+        p1 = new PhotoEntry(new File("data/testdata/tobs.jpg"));
+        p2 = new PhotoEntry(new File("data/testdata/charlie.jpg"));
 
         pa.addPhotoRoll(pr);
         pr.addPhotoEntry(p1);

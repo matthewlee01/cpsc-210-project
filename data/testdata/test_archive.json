@@ -3,13 +3,13 @@
     "name": "roll1",
     "photo_entries": [
       {
-        "file": "data/tobs.jpg",
+        "file": "data/testdata/tobs.jpg",
         "date_long": 1500000000000,
         "description": "the tobdog",
         "tags": ["#dog", "#cute"]
       },
       {
-        "file": "data/tobs.jpg",
+        "file": "data/testdata/tobs.jpg",
         "date_long": 1000000000000,
         "description": "puppy photo of tobs",
         "tags": ["#puppy", "#cute"]
@@ -26,7 +26,7 @@
     "name": "roll3",
     "photo_entries": [
       {
-        "file": "data/charlie.jpg",
+        "file": "data/testdata/charlie.jpg",
         "date_long": 1580000000000,
         "description": "my dog charlie",
         "tags": ["#dog"]

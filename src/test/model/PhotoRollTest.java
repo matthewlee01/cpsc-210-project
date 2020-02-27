@@ -17,8 +17,8 @@ public class PhotoRollTest {
     void runBefore() {
         pr = new PhotoRoll("roll1");
 
-        p1 = new PhotoEntry(new File("data/tobs.jpg"));
-        p2 = new PhotoEntry(new File("data/tobs.jpg"));
+        p1 = new PhotoEntry(new File("data/testdata/tobs.jpg"));
+        p2 = new PhotoEntry(new File("data/testdata/tobs.jpg"));
 
         t1 = new Tag("#good");
         t2 = new Tag("#cool");
