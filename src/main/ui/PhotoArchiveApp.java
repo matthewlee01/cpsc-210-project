@@ -15,7 +15,7 @@ public class PhotoArchiveApp {
     private PhotoArchive archive;
     private Scanner input;
     private static final String INVALID_INPUT_MSG = "Invalid input! Please enter a valid selection.";
-    private static final String DATA_FILE = "data/archive.json";
+    protected static final String DATA_FILE = "data/archive.json";
     private static final String BACK_CMD = "b";
     private static final String EXIT_CMD = "x";
     private static final String INT_REGEX = "\\d+";
@@ -45,7 +45,6 @@ public class PhotoArchiveApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     // EFFECTS: initiates the main archive menu
