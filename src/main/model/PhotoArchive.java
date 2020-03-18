@@ -2,6 +2,7 @@ package model;
 
 import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
+import java.util.List;
 
 // archive of all photo rolls
 public class PhotoArchive {
@@ -41,7 +42,7 @@ public class PhotoArchive {
     }
 
     // EFFECTS: returns all photo entries that have the given tag
-    public static ArrayList<PhotoEntry> filterPhotosByTag(ArrayList<PhotoEntry> photoList,
+    public static ArrayList<PhotoEntry> filterPhotosByTag(List<PhotoEntry> photoList,
                                                           String tagString) {
         ArrayList<PhotoEntry> filteredList = new ArrayList<>();
         for (PhotoEntry p : photoList) {

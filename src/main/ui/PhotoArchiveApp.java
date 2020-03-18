@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// the console ui for the application
 public class PhotoArchiveApp {
 
     private PhotoArchive archive;
@@ -110,14 +111,19 @@ public class PhotoArchiveApp {
 
     // EFFECTS: initiates the action corresponding to the given command
     public void processArchiveCommand(String command) {
-        if (command.equals("r")) {
-            selectPhotoRoll();
-        } else if (command.equals("c")) {
-            createPhotoRoll();
-        } else if (command.equals("p")) {
-            displayAllPhotos();
-        } else {
-            System.out.println(INVALID_INPUT_MSG);
+        switch (command) {
+            case "r":
+                selectPhotoRoll();
+                break;
+            case "c":
+                createPhotoRoll();
+                break;
+            case "p":
+                displayAllPhotos();
+                break;
+            default:
+                System.out.println(INVALID_INPUT_MSG);
+                break;
         }
     }
 
@@ -202,16 +208,22 @@ public class PhotoArchiveApp {
     // EFFECTS: processes command from photo roll menu
     public void processPhotoRollCommand(String command,
                                         PhotoRoll photoRoll) {
-        if (command.equals("p")) {
-            selectPhotoEntry(photoRoll.getPhotoEntries());
-        } else if (command.equals("a")) {
-            addTag(photoRoll);
-        } else if (command.equals("r")) {
-            removeTag(photoRoll);
-        } else if (command.equals("c")) {
-            createPhotoEntry(photoRoll);
-        } else {
-            System.out.println(INVALID_INPUT_MSG);
+        switch (command) {
+            case "p":
+                selectPhotoEntry(photoRoll.getPhotoEntries());
+                break;
+            case "a":
+                addTag(photoRoll);
+                break;
+            case "r":
+                removeTag(photoRoll);
+                break;
+            case "c":
+                createPhotoEntry(photoRoll);
+                break;
+            default:
+                System.out.println(INVALID_INPUT_MSG);
+                break;
         }
 
     }
@@ -374,14 +386,19 @@ public class PhotoArchiveApp {
 
     // EFFECTS: processes command from photo entry menu
     public void processPhotoEntryCommand(String command, PhotoEntry photoEntry) {
-        if (command.equals("e")) {
-            editDescription(photoEntry);
-        } else if (command.equals("a")) {
-            addTag(photoEntry);
-        } else if (command.equals("r")) {
-            removeTag(photoEntry);
-        } else {
-            System.out.println(INVALID_INPUT_MSG);
+        switch (command) {
+            case "e":
+                editDescription(photoEntry);
+                break;
+            case "a":
+                addTag(photoEntry);
+                break;
+            case "r":
+                removeTag(photoEntry);
+                break;
+            default:
+                System.out.println(INVALID_INPUT_MSG);
+                break;
         }
     }
 

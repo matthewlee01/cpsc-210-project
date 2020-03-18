@@ -18,10 +18,12 @@ import model.PhotoEntry;
 import model.PhotoRoll;
 import model.Tag;
 import persistence.Reader;
+import persistence.Writer;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 // the main class to run the application
 public class Main extends Application {
@@ -58,6 +60,7 @@ public class Main extends Application {
 
         window = primaryStage;
         window.setTitle("Photo Archive");
+        window.setOnCloseRequest(event -> createSavePrompt());
 
         archive = Reader.readArchive(new File(PhotoArchiveApp.DATA_FILE));
 
@@ -73,6 +76,17 @@ public class Main extends Application {
         window.setScene(archiveScene);
         window.show();
 
+    }
+
+    private void createSavePrompt() {
+        if (BooleanPrompt.display("Save?",
+                "Would you like to save before exiting?")) {
+            try {
+                Writer.writeArchive(archive, new File(PhotoArchiveApp.DATA_FILE));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // MODIFIES: photoRolls, photoRollsDisplay
@@ -216,11 +230,13 @@ public class Main extends Application {
         tags = FXCollections.observableArrayList();
         Button addTagBtn = createAddTagBtn();
         Button deleteTagBtn = createDeleteTagBtn();
-        ListView<Tag> tagsDisplay = createTagsDisplay(deleteTagBtn);
+        Button filterByTagBtn = createFilterByTagBtn();
+        ListView<Tag> tagsDisplay = createTagsDisplay(deleteTagBtn, filterByTagBtn);
 
         rightMenu.getChildren().addAll(
                 viewPhotoBtn, description, editDescriptionBtn,
-                tagsDisplay, addTagBtn, deleteTagBtn, deletePhotoBtn);
+                tagsDisplay, addTagBtn, deleteTagBtn,
+                filterByTagBtn, deletePhotoBtn);
         return rightMenu;
     }
 
@@ -287,9 +303,19 @@ public class Main extends Application {
         return btn;
     }
 
+    // MODIFIES: photoEntries
+    // EFFECTS: filters the currently displayed photolist by the selected tag
+    private Button createFilterByTagBtn() {
+        Button btn = new Button("Filter Photos By Selected Tag");
+        btn.setVisible(false);
+        btn.setOnAction(event -> photoEntries.setAll(
+                PhotoArchive.filterPhotosByTag(photoEntries, selectedTag.getTag())));
+        return btn;
+    }
+
     // MODIFIES: selectedTag, deleteBtn
     // EFFECTS: creates the tag display node
-    private ListView<Tag> createTagsDisplay(Button deleteBtn) {
+    private ListView<Tag> createTagsDisplay(Button deleteBtn, Button filterBtn) {
         ListView<Tag> lv = new ListView<>(tags);
         lv.setOnMouseClicked(event -> {
             selectedTag = lv.getSelectionModel().getSelectedItem();
@@ -297,6 +323,7 @@ public class Main extends Application {
                 event.consume();
             } else {
                 deleteBtn.setVisible(true);
+                filterBtn.setVisible(true);
                 System.out.println(selectedTag);
             }
         });
