@@ -8,24 +8,26 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.PhotoRoll;
 
-public class PhotoRollPrompt {
+// a text input popup window
+public class TextPrompt {
 
-    static PhotoRoll pr;
+    static String s;
 
-    public static PhotoRoll display() {
+    // MODIFIES: s
+    // EFFECTS: prompts the user for a text input
+    public static String display(String title, String prompt) {
 
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Create a New Photo Roll");
+        window.setTitle(title);
 
-        Label promptLbl = new Label("Enter a name for your new roll:");
+        Label promptLbl = new Label(prompt);
         TextField nameInput = new TextField();
         Button submitBtn = new Button("Enter");
         submitBtn.setOnAction(event -> {
-            pr = new PhotoRoll(nameInput.getText());
+            s = nameInput.getText();
             window.close();
         });
 
@@ -37,6 +39,6 @@ public class PhotoRollPrompt {
         window.setScene(scene);
         window.showAndWait();
 
-        return pr;
+        return s;
     }
 }

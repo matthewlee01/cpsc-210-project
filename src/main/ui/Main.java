@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.PhotoArchive;
 import model.PhotoEntry;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+// the main class to run the application
 public class Main extends Application {
 
     Stage window;
@@ -35,12 +37,17 @@ public class Main extends Application {
     ObservableList<PhotoEntry> photoEntries;
     PhotoEntry selectedPhoto;
 
+    ObservableList<Tag> tags;
+    Tag selectedTag;
+    Label description;
+
+    FileChooser fc;
+
     ImageView photoDisplay;
 
     PhotoArchive archive;
 
     public static void main(String[] args) {
-        // new PhotoArchiveApp();
         launch();
     }
 
@@ -53,6 +60,11 @@ public class Main extends Application {
         window.setTitle("Photo Archive");
 
         archive = Reader.readArchive(new File(PhotoArchiveApp.DATA_FILE));
+
+        fc = new FileChooser();
+        fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+        );
 
         initArchiveScene();
         initPhotoListScene();
@@ -101,6 +113,15 @@ public class Main extends Application {
         return leftMenu;
     }
 
+    // MODIFIES: archive, photoRolls
+    // EFFECTS: prompts the user for the creation of a new photo roll
+    private void createRollPrompt() {
+        PhotoRoll pr = new PhotoRoll(TextPrompt.display("Create New Photo Roll",
+                "Enter a name for your new photo roll:"));
+        archive.addPhotoRoll(pr);
+        photoRolls.setAll(archive.getPhotoRolls());
+    }
+
     // EFFECTS: creates the right-hand menu panel for the archive scene
     private VBox createArchiveRightMenu() {
         VBox rightMenu = new VBox();
@@ -124,16 +145,6 @@ public class Main extends Application {
         return rightMenu;
     }
 
-    // MODIFIES: archive, photoRolls
-    // EFFECTS: prompts the user for the creation of a new photo roll
-    private void createRollPrompt() {
-        PhotoRoll pr = PhotoRollPrompt.display();
-        if (pr != null) {
-            archive.addPhotoRoll(pr);
-            photoRolls.setAll(archive.getPhotoRolls());
-        }
-    }
-
     // MODIFIES: archive, photoRolls, selectedRoll
     // EFFECTS: deletes the selected photo roll and sets selected to null
     private void deleteSelectedRoll() {
@@ -142,6 +153,8 @@ public class Main extends Application {
         selectedRoll = null;
     }
 
+    // MODIFIES: photoEntries, selectedPhoto, tags, description, photoListScene
+    // EFFECTS: initializes the photo list scene
     private void initPhotoListScene() {
         BorderPane layout = new BorderPane();
         VBox leftMenu = createPhotoListLeftMenu();
@@ -155,6 +168,8 @@ public class Main extends Application {
                 event.consume();
             } else {
                 rightMenu.setVisible(true);
+                tags.setAll(selectedPhoto.getTags());
+                description.setText(selectedPhoto.getDescription());
                 System.out.println(selectedPhoto);
             }
         });
@@ -165,37 +180,149 @@ public class Main extends Application {
         photoListScene = new Scene(layout);
     }
 
+    // EFFECTS: creates the left-hand menu for the photo list scene
     private VBox createPhotoListLeftMenu() {
         VBox leftMenu = new VBox();
 
         Button backBtn = new Button("Back");
         backBtn.setOnAction(event -> window.setScene(archiveScene));
-        leftMenu.getChildren().addAll(backBtn);
+        Button createEntryBtn = new Button("Create New Photo Entry");
+        createEntryBtn.setOnAction(event -> createEntryPrompt());
 
+        leftMenu.getChildren().addAll(backBtn, createEntryBtn);
         return leftMenu;
     }
 
+    // MODIFIES: selectedRoll, photoEntries
+    // EFFECTS: prompts the user to create a new photo entry
+    private void createEntryPrompt() {
+        PhotoEntry pe = new PhotoEntry(fc.showOpenDialog(window));
+        selectedRoll.addPhotoEntry(pe);
+        photoEntries.setAll(selectedRoll.getPhotoEntries());
+    }
+
+    // MODIFIES: description, tags
+    // EFFECTS: creates the right-hand menu for the photo list scene
     private VBox createPhotoListRightMenu() {
         VBox rightMenu = new VBox();
         rightMenu.setVisible(false);
 
-        Button viewPhotoBtn = new Button("View Photo");
-        viewPhotoBtn.setOnAction(event -> {
+        Button viewPhotoBtn = createViewPhotoBtn();
+        Button deletePhotoBtn = createDeletePhotoBtn(rightMenu);
+
+        description = new Label();
+        Button editDescriptionBtn = createEditDescriptionBtn();
+
+        tags = FXCollections.observableArrayList();
+        Button addTagBtn = createAddTagBtn();
+        Button deleteTagBtn = createDeleteTagBtn();
+        ListView<Tag> tagsDisplay = createTagsDisplay(deleteTagBtn);
+
+        rightMenu.getChildren().addAll(
+                viewPhotoBtn, description, editDescriptionBtn,
+                tagsDisplay, addTagBtn, deleteTagBtn, deletePhotoBtn);
+        return rightMenu;
+    }
+
+    // EFFECTS: creates the view photo button
+    private Button createViewPhotoBtn() {
+        Button btn = new Button("View Photo");
+        btn.setOnAction(event -> {
             try {
-                FileInputStream fis = new FileInputStream(selectedPhoto.getPhotoFile());
-                Image img = new Image(fis);
-                photoDisplay.setImage(img);
-                window.setScene(photoDisplayScene);
+                viewPhoto();
             } catch (FileNotFoundException e) {
                 event.consume();
             }
         });
-
-        rightMenu.getChildren().addAll(viewPhotoBtn);
-        return rightMenu;
-
+        return btn;
     }
 
+    // MODIFIES: menu
+    // EFFECTS: creates the delete photo button
+    private Button createDeletePhotoBtn(VBox menu) {
+        Button btn = new Button("Delete Selected Entry");
+        btn.setOnAction(event -> {
+            deletePhoto();
+            menu.setVisible(false);
+        });
+        return btn;
+    }
+
+    // MODIFIES: selectedPhoto, description
+    // EFFECTS: creates the edit description button
+    private Button createEditDescriptionBtn() {
+        Button btn = new Button("Edit Description");
+        btn.setOnAction(event -> {
+            selectedPhoto.setDescription(TextPrompt.display("Update Description",
+                    "Enter a new description for this photo:"));
+            description.setText(selectedPhoto.getDescription());
+        });
+        return btn;
+    }
+
+    // MODIFIES: selectedPhoto, tags
+    // EFFECTS: creates the add tag button
+    private Button createAddTagBtn() {
+        Button btn = new Button("Create New Tag");
+        btn.setOnAction(event -> {
+            Tag t = new Tag(TextPrompt.display("Create New Tag",
+                    "Enter the tag you would like to add:"));
+            selectedPhoto.addTag(t);
+            tags.setAll(selectedPhoto.getTags());
+        });
+        return btn;
+    }
+
+    // MODIFIES: selectedPhoto, selectedTag, tags
+    // EFFECTS: creates the delete tag button
+    private Button createDeleteTagBtn() {
+        Button btn = new Button("Delete Selected Tag");
+        btn.setVisible(false);
+        btn.setOnAction(event -> {
+            selectedPhoto.removeTag(selectedTag);
+            selectedTag = null;
+            tags.setAll(selectedPhoto.getTags());
+            btn.setVisible(false);
+        });
+        return btn;
+    }
+
+    // MODIFIES: selectedTag, deleteBtn
+    // EFFECTS: creates the tag display node
+    private ListView<Tag> createTagsDisplay(Button deleteBtn) {
+        ListView<Tag> lv = new ListView<>(tags);
+        lv.setOnMouseClicked(event -> {
+            selectedTag = lv.getSelectionModel().getSelectedItem();
+            if (selectedTag == null) {
+                event.consume();
+            } else {
+                deleteBtn.setVisible(true);
+                System.out.println(selectedTag);
+            }
+        });
+        return lv;
+    }
+
+    // MODIFIES: photoDisplay, window
+    // EFFECTS: loads the selected image file and shows it on the display scene
+    private void viewPhoto() throws FileNotFoundException {
+        FileInputStream fis = new FileInputStream(selectedPhoto.getPhotoFile());
+        Image img = new Image(fis);
+        photoDisplay.setImage(img);
+        window.setScene(photoDisplayScene);
+    }
+
+    // MODIFIES: selectedRoll, photoEntries, selectedPhoto
+    // EFFECTS: deletes the selected photo
+    private void deletePhoto() {
+        selectedRoll.removePhotoEntry(selectedPhoto);
+        photoEntries.setAll(selectedRoll.getPhotoEntries());
+        selectedPhoto = null;
+    }
+
+
+    // MODIFIES: photoDisplay, photoDisplayScene
+    // EFFECTS: initializes the photo display scene
     private void initPhotoDisplayScene() {
         BorderPane layout = new BorderPane();
 
