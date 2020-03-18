@@ -5,16 +5,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.PhotoArchive;
 import model.PhotoEntry;
 import model.PhotoRoll;
+import model.Tag;
 import persistence.Reader;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Main extends Application {
 
@@ -24,11 +30,12 @@ public class Main extends Application {
     Scene photoDisplayScene;
 
     ObservableList<PhotoRoll> photoRolls;
-    ListView<PhotoRoll> photoRollsDisplay;
     PhotoRoll selectedRoll;
 
     ObservableList<PhotoEntry> photoEntries;
     PhotoEntry selectedPhoto;
+
+    ImageView photoDisplay;
 
     PhotoArchive archive;
 
@@ -48,8 +55,8 @@ public class Main extends Application {
         archive = Reader.readArchive(new File(PhotoArchiveApp.DATA_FILE));
 
         initArchiveScene();
-        //initPhotoListScene();
-        //initPhotoDisplayScene();
+        initPhotoListScene();
+        initPhotoDisplayScene();
 
         window.setScene(archiveScene);
         window.show();
@@ -64,7 +71,8 @@ public class Main extends Application {
         VBox rightMenu = createArchiveRightMenu();
 
         photoRolls = FXCollections.observableArrayList(archive.getPhotoRolls());
-        photoRollsDisplay = new ListView<>(photoRolls);
+
+        ListView<PhotoRoll> photoRollsDisplay = new ListView<>(photoRolls);
         photoRollsDisplay.setOnMouseClicked(event -> {
             selectedRoll = photoRollsDisplay.getSelectionModel().getSelectedItem();
             if (selectedRoll == null) {
@@ -87,6 +95,7 @@ public class Main extends Application {
 
         Button createRollBtn = new Button("Create New Photo Roll");
         createRollBtn.setOnAction(event -> createRollPrompt());
+
         leftMenu.getChildren().addAll(createRollBtn);
 
         return leftMenu;
@@ -102,7 +111,14 @@ public class Main extends Application {
             rightMenu.setVisible(false);
         });
 
-        rightMenu.getChildren().addAll(deleteSelectedRollBtn);
+        Button viewRollPhotosBtn = new Button("View Photos");
+        viewRollPhotosBtn.setOnAction(event -> {
+            photoEntries.setAll(selectedRoll.getPhotoEntries());
+            System.out.println(photoEntries);
+            window.setScene(photoListScene);
+        });
+
+        rightMenu.getChildren().addAll(deleteSelectedRollBtn, viewRollPhotosBtn);
         rightMenu.setVisible(false);
 
         return rightMenu;
@@ -126,4 +142,73 @@ public class Main extends Application {
         selectedRoll = null;
     }
 
+    private void initPhotoListScene() {
+        BorderPane layout = new BorderPane();
+        VBox leftMenu = createPhotoListLeftMenu();
+        VBox rightMenu = createPhotoListRightMenu();
+
+        photoEntries = FXCollections.observableArrayList();
+        ListView<PhotoEntry> photoEntriesDisplay = new ListView<>(photoEntries);
+        photoEntriesDisplay.setOnMouseClicked(event -> {
+            selectedPhoto = photoEntriesDisplay.getSelectionModel().getSelectedItem();
+            if (selectedPhoto == null) {
+                event.consume();
+            } else {
+                rightMenu.setVisible(true);
+                System.out.println(selectedPhoto);
+            }
+        });
+
+        layout.setLeft(leftMenu);
+        layout.setRight(rightMenu);
+        layout.setCenter(photoEntriesDisplay);
+        photoListScene = new Scene(layout);
+    }
+
+    private VBox createPhotoListLeftMenu() {
+        VBox leftMenu = new VBox();
+
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(event -> window.setScene(archiveScene));
+        leftMenu.getChildren().addAll(backBtn);
+
+        return leftMenu;
+    }
+
+    private VBox createPhotoListRightMenu() {
+        VBox rightMenu = new VBox();
+        rightMenu.setVisible(false);
+
+        Button viewPhotoBtn = new Button("View Photo");
+        viewPhotoBtn.setOnAction(event -> {
+            try {
+                FileInputStream fis = new FileInputStream(selectedPhoto.getPhotoFile());
+                Image img = new Image(fis);
+                photoDisplay.setImage(img);
+                window.setScene(photoDisplayScene);
+            } catch (FileNotFoundException e) {
+                event.consume();
+            }
+        });
+
+        rightMenu.getChildren().addAll(viewPhotoBtn);
+        return rightMenu;
+
+    }
+
+    private void initPhotoDisplayScene() {
+        BorderPane layout = new BorderPane();
+
+        photoDisplay = new ImageView();
+
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(event -> window.setScene(photoListScene));
+        VBox leftMenu = new VBox();
+        leftMenu.getChildren().addAll(backBtn);
+
+        layout.setCenter(photoDisplay);
+        layout.setLeft(leftMenu);
+
+        photoDisplayScene = new Scene(layout);
+    }
 }
