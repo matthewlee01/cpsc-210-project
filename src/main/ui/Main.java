@@ -111,7 +111,11 @@ public class Main extends Application {
     // MODIFIES: archive, photoRolls
     // EFFECTS: prompts the user for the creation of a new photo roll
     private void createRollPrompt() {
-        // stub
+        PhotoRoll pr = PhotoRollPrompt.display();
+        if (pr != null) {
+            archive.addPhotoRoll(pr);
+            photoRolls.setAll(archive.getPhotoRolls());
+        }
     }
 
     // MODIFIES: archive, photoRolls, selectedRoll
