@@ -56,13 +56,17 @@ public class Main extends Application {
     // MODIFIES: window, archive
     // EFFECTS: initializes window stage
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         window = primaryStage;
         window.setTitle("Photo Archive");
         window.setOnCloseRequest(event -> createSavePrompt());
 
-        archive = Reader.readArchive(new File(PhotoArchiveApp.DATA_FILE));
+        try {
+            archive = Reader.readArchive(new File(PhotoArchiveApp.DATA_FILE));
+        } catch (IOException e) {
+            archive = new PhotoArchive();
+        }
 
         fc = new FileChooser();
         fc.getExtensionFilters().addAll(
