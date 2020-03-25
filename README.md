@@ -30,4 +30,6 @@ Additionally, this app aims to provide film-specific tools to help streamline th
 
 - Upon closing the application by clicking the (x) in the top right corner, you will be prompted to save your work. If you choose "Yes", your archive will be saved to file and automatically loaded if you relaunch the program. Because the user is intended to have just one archive for all their photos, it is automatically loaded on startup without any input.
 
+### Phase 4: Task 2
 
+The current implementation of the Reader class is robust: when the Reader attempts to read the state from the save file, it will throw an IOException if the read fails. This exception is tested in ReaderTest and gracefully caught in the UI calls.

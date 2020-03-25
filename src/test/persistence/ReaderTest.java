@@ -38,7 +38,6 @@ public class ReaderTest {
         } catch (IOException e) {
             fail("file read should not fail here");
         }
-        // stub
 
     }
 
