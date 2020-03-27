@@ -16,6 +16,8 @@ import org.apache.commons.io.FileUtils;
 
 public class Reader {
 
+    public static final String DATA_FILE = "data/archive.json";
+
     // EFFECTS: returns a PhotoArchive loaded from the save file
     public static PhotoArchive readArchive(File file) throws IOException {
         PhotoArchive pa = new PhotoArchive();

@@ -33,3 +33,8 @@ Additionally, this app aims to provide film-specific tools to help streamline th
 ### Phase 4: Task 2
 
 The current implementation of the Reader class is robust: when the Reader attempts to read the state from the save file, it will throw an IOException if the read fails. This exception is tested in ReaderTest and gracefully caught in the UI calls.
+
+### Phase 4: Task 3
+
+- Refactored GUI into its own class to increase cohesion, as it didn't belong in the Main class
+- Moved save file location string into Reader class, as it makes much more sense for the Reader to keep track of the file's location rather than the UI keeping track of it.

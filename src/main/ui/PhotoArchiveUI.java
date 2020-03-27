@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Scanner;
 
 // the console ui for the application
-public class PhotoArchiveApp {
+public class PhotoArchiveUI {
 
     private PhotoArchive archive;
     private Scanner input;
     private static final String INVALID_INPUT_MSG = "Invalid input! Please enter a valid selection.";
-    protected static final String DATA_FILE = "data/archive.json";
+
     private static final String BACK_CMD = "b";
     private static final String EXIT_CMD = "x";
     private static final String INT_REGEX = "\\d+";
 
     // EFFECTS: runs the photo archive application
-    public PhotoArchiveApp() {
+    public PhotoArchiveUI() {
         loadPhotoArchive();
         launchPhotoArchive();
     }
@@ -31,7 +31,7 @@ public class PhotoArchiveApp {
     // EFFECTS: attempts to load a the prexisting archive from file
     public void loadPhotoArchive() {
         try {
-            archive = Reader.readArchive(new File(DATA_FILE));
+            archive = Reader.readArchive(new File(Reader.DATA_FILE));
         } catch (IOException e) {
             System.out.println("Could not load archive from saved data - creating new archive.");
             archive = new PhotoArchive();
@@ -42,7 +42,7 @@ public class PhotoArchiveApp {
     // EFFECTS: saves the current photo archive to the JSON file
     public void savePhotoArchive() {
         try {
-            Writer.writeArchive(archive, new File(DATA_FILE));
+            Writer.writeArchive(archive, new File(Reader.DATA_FILE));
         } catch (IOException e) {
             e.printStackTrace();
         }
